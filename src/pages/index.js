@@ -33,6 +33,19 @@ const IndexPage = () => {
       console.log(`Failed to find Santa!: ${e}`);
     }
     console.log('routeJson', routeJson);
+    
+    // **Destructure routeJson to grab destinations into a constant, adding a fallback to an empty object
+    const { destinations = [] } = routeJson || {};
+
+    // **Filter the results to only find the destinations that he's visited, using the arrival time from the route object
+    const destinationsVisited = destinations.filter(({arrival}) => arrival < Date.now());
+    
+    // **Filter the results to find only the locations with presents
+    const destinationsWithPresents = destinationsVisited.filter(({presentsDelivered}) => presentsDelivered > 0);
+
+    // **Grab the last item from the array, which shows his last known location
+    const lastKnownDestination = destinationsWithPresents[destinationsWithPresents.length - 1]
+    
   }
 
   const mapSettings = {
